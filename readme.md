@@ -31,10 +31,15 @@ Users can enter an **addres**, **region**, and **city**, get detailed weather in
 weather-dashboard/
 
 ──CSS/
+
 ------image.jpg
+
 ------styles.css
+
 ──JS/
-------jsCode.js  
+
+------jsCode.js 
+
 ──index.html
 
 ──README.md
