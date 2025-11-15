@@ -30,25 +30,21 @@ Users can enter an **addres**, **region**, and **city**, get detailed weather in
 
 weather-dashboard/
 
-|
+──CSS/
 
-|──CSS/
+   ──image.jpg
 
-|   ├──image.jpg
+   ──styles.css
+   
+──JS/
 
-|   └──styles.css
+    ──jsCode.js
+    
+──index.html
 
-|
-|──JS/
+──README.md
 
-|    └──jsCode.js
-
-|
-|──index.html
-
-|──README.md
-
-└──.gitignore
+──.gitignore
 
 ## How to run locally
 
