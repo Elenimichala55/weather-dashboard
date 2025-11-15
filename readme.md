@@ -1,13 +1,10 @@
 # Weather Dashboard
 
----
-
 This project is a **responsive weather dashboard** built with vanilla JavaScript, HTML, and CSS.  
 It retrieves 5-day / 3-hour forecast data from the **OpenWeather API** and visualizes temperature, humidity, and pressure trends.
 
 Users can enter an **addres**, **region**, and **city**, get detailed weather information, and view dynamic charts.
 
----
 
 ## Features
 
