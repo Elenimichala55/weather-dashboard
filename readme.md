@@ -29,16 +29,25 @@ Users can enter an **addres**, **region**, and **city**, get detailed weather in
 ## Project Structure
 
 weather-dashboard/
+
 |
+
 |──CSS/
+
 |   ├──image.jpg
+
 |   └──styles.css
+
 |
 |──JS/
+
 |    └──jsCode.js
+
 |
 |──index.html
+
 |──README.md
+
 └──.gitignore
 
 ## How to run locally
