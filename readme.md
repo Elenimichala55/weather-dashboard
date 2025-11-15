@@ -59,15 +59,16 @@ start index.html        # Windows
 No server required.
 
 ### 3. Insert your API key
-In script.js, replace:
+In jsCode.js, replace:
 const API_KEY = "YOUR_API_KEY_HERE";
 
 ## API References
 - OpenWeather 5-Day Forecast API
+- https://openweathermap.org/api
 
 ## Author
 Eleni Michala
-MSc Applied Artificial Intelligence — University of Warwick
+MSc Applied Artificial Intelligence — University of Warwick | 
 BSc Computer Science — University of Cyprus
 
 
