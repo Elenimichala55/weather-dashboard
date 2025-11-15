@@ -130,53 +130,20 @@ function fetchGeoData(address, region, city) {
 }
 
 function fetchWeatherData(lat, lon) {
-    let apiKey = "376f31cae2ce7af6875010dc87aae498"; 
-    let currentWeatherURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
-    let forecastWeatherURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+    const url = `/api/weather?lat=${lat}&lon=${lon}`;
 
-    fetch(currentWeatherURL, {
-        method: "GET",
-        headers: {
-            "Accept": "application/json"
-        }
-    })
-    .then(response => {
-        if (response.status !== 200) {
-            console.log('Status Code:', response.status);
-            return;
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log("Current Weather Data:", data); 
-        displayCurrentWeather(data, lat, lon);
-    })
-    .catch(error => {
-        console.log("Error fetching current weather:", error);
-    });
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            console.log("Current Weather Data:", data.current);
+            console.log("Weather Forecast Data:", data.forecast);
 
-    fetch(forecastWeatherURL, {
-        method: "GET",
-        headers: {
-            "Accept": "application/json"
-        }
-    })
-    .then(response => {
-        if (response.status !== 200) {
-            console.log('Status Code:', response.status);
-            return;
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log("Weather Forecast Data:", data); 
-        displayWeatherForecast(data);
-        window.forecastRawData = data.list;
-        drawPlotlyCharts(data.list);
-    })
-    .catch(error => {
-        console.log("Error fetching forecast data:", error);
-    });
+            displayCurrentWeather(data.current, lat, lon);
+            displayWeatherForecast(data.forecast);
+            window.forecastRawData = data.forecast.list;
+            drawPlotlyCharts(data.forecast.list);
+        })
+        .catch(err => console.error("Error:", err));
 }
 
 function displayCurrentWeather(data, lat, lon) {
