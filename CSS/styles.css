@@ -79,7 +79,7 @@ form#registerForm {
 .form-control, .form-select {
     height: 38px;
     margin-top: auto;
-    margin-bottom: auto;
+    margin-bottom: 10px;
 }
 
 .btn-primary {
