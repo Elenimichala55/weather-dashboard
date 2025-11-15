@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="CSS/styles.css" />
+    <script src="JS/jsCode.js" defer></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap JavaScript (including Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!--Open Layers-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v10.4.0/ol.css" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/ol@v10.4.0/dist/ol.js" defer></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Plotly -->
+    <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" defer></script>
+
+</head>
+
+<body>
+    <div class="header d-flex justify-content-between align-items-center px-4">
+        <div id="welcomeMessage" class="fs-6"></div>
+    </div>
+
+    <div class="container main-dashboard">
+        <div class="container-fluid"> 
+            <h4>Weather Dashboard</h4>
+            <div class="search-container text-white p-3">
+                <form class="row g-2 needs-validation" novalidate>
+                    <!-- Address -->
+                    <div class="col-md-3">
+                        <label class="form-label">Address <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="address" placeholder="Enter address">
+                        <div class="text-danger small" id="error1"></div>
+                    </div>
+
+                    <!-- Region -->
+                    <div class="col-md-2">
+                        <label class="form-label">Region <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="region" placeholder="Enter region">
+                        <div class="text-danger small" id="error2"></div>
+                    </div>
+
+                    <!-- City -->
+                     <div class="col-md-3">
+                        <label class="form-label">City <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="city" placeholder="Enter city">
+                        <div class="text-danger small" id="error3"></div>
+                    </div>
+
+                    <!-- Degree -->
+                    <div class="col-md-2">
+                        <label class="form-label">Degree</label>
+                        <div class="d-flex align-items-center">
+                            <div class="form-check me-2">
+                                <input class="form-check-input" type="radio" name="degree" id="degreeC" value="C" title="Select Celsius" checked>
+                                <label class="form-check-label" for="degreeC">°C</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="degree" id="degreeF" value="F" title="Select Fahrenheit">
+                                <label class="form-check-label" for="degreeF">°F</label>
+                            </div>
+                        </div>
+                        <div class="text-danger small" id="error4"></div>
+                    </div>
+
+                    <!-- Buttons (Search, Reset, Menu) -->
+                    <div class="d-flex align-items-center justify-content-end col-lg-2 col-md-12 col-sm-6 fixMargin">
+                        <button id="search" type="button" onclick="checkError()" class="btn btn-primary d-flex align-items-center btn-md" title="Search">
+                            <i class="fa-solid fa-magnifying-glass me-2"></i> Search
+                        </button>
+                        <button type="reset" id="reset" onclick="resetPage()" class="btn btn-danger btn-md me-2" title="Reset"><i class="fa-solid fa-ban"></i></button>
+                    </div>
+                </form>
+                <div class="text-danger small text-center" id="locationError"></div>
+            </div>
+        </div>
+
+        <!-- Last 5 Requests Modal -->
+        <div class="modal fade" id="lastRequestsModal" tabindex="-1" aria-labelledby="lastRequestsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="lastRequestsModalLabel">Last 5 requests</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped mb-0 w-100" style="table-layout: fixed;">
+                    <thead>
+                        <tr>
+                        <th>Time</th>
+                        <th>Address</th>
+                        <th>Region</th>
+                        <th>City</th>
+                        <th>Country</th>
+                        </tr>
+                    </thead>
+                    <tbody id="requestsTableBody">
+                        <!-- Data gets inserted here -->
+                    </tbody>
+                    </table>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <hr class="separator-line">
+
+        <div class="container mt-4" id="weather-container">
+            <!-- Navigation Tabs -->
+            <ul class="nav nav-tabs" id="weatherTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="now-tab" data-bs-toggle="tab" data-bs-target="#now" type="button" role="tab" aria-controls="now" aria-selected="true">
+                        Right Now
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="forecast-tab" data-bs-toggle="tab" data-bs-target="#forecast" type="button" role="tab" aria-controls="forecast" aria-selected="false">
+                        Next 24 Hours
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab Content Wrapper -->
+            <div class="tab-content mt-3">
+
+                <!-- Right Now Tab -->
+                <div class="tab-pane fade show active" id="now" role="tabpanel" aria-labelledby="now-tab">
+                    <div class="weather-card">
+                        <div class="row">
+                            <!-- Left Section (Weather Info) -->
+                            <div class="col-lg-6 col-md-12 weather-info">
+                                <div class="d-flex align-items-center" id="img">
+                                    <img id="weather-icon" src="" alt="Weather Icon" class="weather-icon me-2">
+                                    <div id="info">
+                                        <p class="text-muted" id="weather-description"><span id="weather-location"></span></p>
+                                        <h2 id="temperature" class="display-6"></h2>
+                                        <p class="text-muted">
+                                            <span class="text-primary">L: <span id="temp-min"></span>°C</span> |
+                                            <span class="text-danger">H: <span id="temp-max"></span>°C</span>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <table class="table table-striped mt-3 current-weather-table">
+                                    <tbody>
+                                        <tr><th>Pressure</th><td id="pressure"></td></tr>
+                                        <tr><th>Humidity</th><td id="humidity"></td></tr>
+                                        <tr><th>Wind Speed</th><td id="wind-speed"></td></tr>
+                                        <tr><th>Cloud Cover</th><td id="cloud-cover"></td></tr>
+                                        <tr><th>Sunrise</th><td id="sunrise"></td></tr>
+                                        <tr><th>Sunset</th><td id="sunset"></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Right Section (Map) -->
+                            <div class="col-lg-6 col-md-12 map-container">
+                                <div id="weather-map"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Forecast Tab -->
+                <div class="tab-pane fade" id="forecast" role="tabpanel" aria-labelledby="forecast-tab">
+                    <div class="weather-card p-4">
+                        <div class="table-responsive">
+                            <table id="forecast-table" class="table table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Summary</th>
+                                        <th>Temp</th>
+                                        <th>Cloud Cover</th>
+                                        <th style="border-top-right-radius: 10px;">Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="forecast-table-body">
+                                    <!-- Data will be inserted dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Weather Details</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <img id="modal-icon" src="" alt="Weather icon3">
+                                <span id="modal-description" class="text-muted"></p></span>
+                
+                                <div class="row">
+                                    <div class="col">
+                                        <strong>Humidity</strong>
+                                        <p id="modal-humidity"></p>
+                                    </div>
+                                    <div class="col">
+                                        <strong>Pressure</strong>
+                                        <p id="modal-pressure"></p>
+                                    </div>
+                                    <div class="col">
+                                        <strong>Wind Speed</strong>
+                                        <p id="modal-wind"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        
+        <hr class="separator-line">  
+
+        <div class="weather-card p-4 mt-4" id="chart-card">
+            <div class="chart-header">
+                <h5>Weather Forecast for <span id="chart-location">[Location]</span></h5>
+            </div>
+            <div class="row" id="charts-row">
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center chart">
+                    <div id="temperatureChart" class="plotly-chart w-100"></div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center chart">
+                    <div id="humidityChart" class="plotly-chart w-100"></div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center chart">
+                    <div id="pressureChart" class="plotly-chart w-100"></div>
+                </div>
+            </div>
+        </div>
+        
+        <hr class="separator-line">
+        
+    </div> 
+
+</body>
+
+</html>
