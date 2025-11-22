@@ -49,22 +49,27 @@ weather-dashboard/
 ## How to run locally
 
 ### 1. Clone the repository
+```bash
 git clone https://github.com/Elenimichala55/weather-dashboard.git
 cd weather-dashboard
+```
 
 ### 2. Open the dashboard
 Open index.html in any browser:
 - Double-click the file, or
-- Run:    
+- Run:
+```bash    
 xdg-open index.html     # Linux
 open index.html         # macOS
 start index.html        # Windows
-
+```
 No server required.
 
 ### 3. Insert your API key
 In jsCode.js, replace:
+```bash
 const API_KEY = "YOUR_API_KEY_HERE";
+```
 
 ## API References
 - OpenWeather 5-Day Forecast API
@@ -72,8 +77,8 @@ const API_KEY = "YOUR_API_KEY_HERE";
 
 ## Author
 Eleni Michala
-MSc Applied Artificial Intelligence — University of Warwick | 
-BSc Computer Science — University of Cyprus
+- MSc Applied Artificial Intelligence — University of Warwick | 
+- BSc Computer Science — University of Cyprus
 
 
 
