@@ -27,24 +27,18 @@ Users can enter an **addres**, **region**, and **city**, get detailed weather in
 - **OpenWeather API**
 
 ## Project Structure
-
-weather-dashboard/
-
-──CSS/
-
-------image.jpg
-
-------styles.css
-
-──JS/
-
-------jsCode.js 
-
-──index.html
-
-──README.md
-
-──.gitignore
+```bash
+weather-dashboard
+├── CSS
+│   ├── image.jpg
+│   └── styles.css
+├── JS
+│   └── jsCode.js
+├── api
+│   └── weather.js
+├── index.html
+└── readme.md
+```
 
 ## How to run locally
 
@@ -66,7 +60,7 @@ start index.html        # Windows
 No server required.
 
 ### 3. Insert your API key
-In jsCode.js, replace:
+In /api/weather.js, replace:
 ```bash
 const API_KEY = "YOUR_API_KEY_HERE";
 ```
