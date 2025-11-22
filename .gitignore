@@ -1,6 +1,3 @@
-# Ignore backend serverless functions
-/api/
-
 # Node modules
 node_modules/
 
