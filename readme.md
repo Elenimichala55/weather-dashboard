@@ -77,8 +77,8 @@ const API_KEY = "YOUR_API_KEY_HERE";
 
 ## Author
 Eleni Michala
-MSc Applied Artificial Intelligence — University of Warwick | 
-BSc Computer Science — University of Cyprus
+- MSc Applied Artificial Intelligence — University of Warwick | 
+- BSc Computer Science — University of Cyprus
 
 
 
